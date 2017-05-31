@@ -1,0 +1,20 @@
+<section data-ng-controller="FlightsController" data-ng-init="find()">
+  <div class="page-header">
+    <h1>Flights</h1>
+  </div>
+  <div class="list-group">
+    <a data-ng-repeat="flight in flights" data-ui-sref="flights.view({flightId: flight._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="flight.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-bind="flight.user.displayName"></span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="flight.title"></h4>
+      <p class="list-group-item-text" data-ng-bind="flight.content"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="flights.$resolved && !flights.length">
+    No flights yet, why don't you <a data-ui-sref="flights.create">create one</a>?
+  </div>
+</section>

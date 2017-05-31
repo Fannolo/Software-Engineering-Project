@@ -1,0 +1,20 @@
+<section data-ng-controller="DronesController" data-ng-init="find()">
+  <div class="page-header">
+    <h1>Drones</h1>
+  </div>
+  <div class="list-group">
+    <a data-ng-repeat="drone in drones" data-ui-sref="drones.view({droneId: drone._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="drone.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-bind="drone.user.displayName"></span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="drone.title"></h4>
+      <p class="list-group-item-text" data-ng-bind="drone.content"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="drones.$resolved && !drones.length">
+    No drones yet, why don't you <a data-ui-sref="drones.create">create one</a>?
+  </div>
+</section>

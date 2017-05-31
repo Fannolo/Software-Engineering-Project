@@ -1,0 +1,20 @@
+<section data-ng-controller="CheckelementsController" data-ng-init="find()">
+  <div class="page-header">
+    <h1>Checkelements</h1>
+  </div>
+  <div class="list-group">
+    <a data-ng-repeat="checkelement in checkelements" data-ui-sref="checkelements.view({checkelementId: checkelement._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="checkelement.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-bind="checkelement.user.displayName"></span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="checkelement.title"></h4>
+      <p class="list-group-item-text" data-ng-bind="checkelement.content"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="checkelements.$resolved && !checkelements.length">
+    No checkelements yet, why don't you <a data-ui-sref="checkelements.create">create one</a>?
+  </div>
+</section>
