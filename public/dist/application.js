@@ -325,16 +325,38 @@ angular.module('checklists').config(['$stateProvider',
 'use strict';
 
 // checklists controller
-angular.module('checklists').controller('ChecklistsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Checklists',
-  function ($scope, $stateParams, $location, Authentication, Checklists) {
+angular.module('checklists').controller('ChecklistsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Checklists','$http',
+  function ($scope, $stateParams, $location, Authentication, Checklists,$http) {
     $scope.authentication = Authentication;
+
+    $scope.checkelements = [];
+    $scope.getCheckelement = function (){
+      $http({
+        method: 'GET',
+        url: '/api/checkelements'
+      })
+      .success(function(data,status){
+        $scope.checkelements = data;
+      })
+      .error(function(data,status){
+        return 'theres an error in the checkelements';
+      });
+    };
+
+    $scope.selectedCheckelements = [];
+
+    $scope.toggleSelection = function toggleSelection(checkelement) {
+      $scope.selectedCheckelements.push(checkelement);
+      console.log('sto pushando zi');
+    };
 
     // Create new checklist
     $scope.create = function () {
       // Create new checklist object
       var checklist = new Checklists({
         title: this.title,
-        content: this.content
+        content: this.content,
+        checkelement: this.checkelement
       });
 
       // Redirect after save
@@ -344,6 +366,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$sta
         // Clear form fields
         $scope.title = '';
         $scope.content = '';
+        $scope.checkelement = [];
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
@@ -933,31 +956,46 @@ angular.module('flights').controller('FlightsController', ['$scope', '$statePara
   function($scope, $stateParams, $location, Authentication, Flights, $http) {
     $scope.authentication = Authentication;
 
+    $scope.drones = [];
+
+    $scope.getDrones = function (){
+      $http({
+        method: 'GET',
+        url: '/api/drones'
+      })
+      .success(function(data, status){
+        $scope.drones = data;
+      })
+      .error(function(data,status){
+        alert('Error');
+      });
+    };
+
+    $scope.checklists = [];
+
+    $scope.getChecklists = function (){
+      $http({
+        method: 'GET',
+        url: '/api/checklists'
+      })
+      .success(function(data, status){
+        $scope.checklists = data;
+      })
+      .error(function(data, status){
+        alert('error');
+      });
+    };
+
+
     // Create new flight
     $scope.create = function() {
       // Create new flight object
       var flight = new Flights({
         title: this.title,
         content: this.content,
+        drone: $scope.drone,
+        checklist: $scope.checklist,
         address: this.address,
-        checklists: $http({
-          method: 'GET',
-          url: '/api/checklists'
-        }).then(function successCallback(response) {
-
-          return response.data;
-        }, function errorCallback(response) {
-
-          console.log('theres an error in checlists');
-        }),
-        drones: $http({
-          method: 'GET',
-          url: '/api/drones'
-        }).then(function successCallback(response) {
-          return response.data;
-        }, function errorCallback(response) {
-          console.log('ciao errori nei droni');
-        }),
         postFlightNotes: this.postFlightNotes
       });
 
@@ -969,8 +1007,8 @@ angular.module('flights').controller('FlightsController', ['$scope', '$statePara
         $scope.title = '';
         $scope.content = '';
         $scope.address = '';
-        $scope.checklists = '';
-        $scope.drones = '';
+        $scope.drone = '';
+        $scope.checklist = '';
         $scope.postFlightNotes = '';
 
       }, function(errorResponse) {
