@@ -81,7 +81,12 @@ angular.element(document).ready(function () {
 'use strict';
 
 // Use Applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('articles');
+ApplicationConfiguration.registerModule('checkelements');
+
+'use strict';
+
+// Use Applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('checklists');
 
 'use strict';
 
@@ -93,32 +98,44 @@ ApplicationConfiguration.registerModule('core.admin.routes', ['ui.router']);
 'use strict';
 
 // Use Applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('drones');
+
+'use strict';
+
+// Use Applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('flights');
+
+'use strict';
+
+// Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('users', ['core']);
 ApplicationConfiguration.registerModule('users.admin', ['core.admin']);
 ApplicationConfiguration.registerModule('users.admin.routes', ['core.admin.routes']);
 
 'use strict';
 
-// Configuring the Articles module
-angular.module('articles').run(['Menus',
+// Configuring the checkelements module
+angular.module('checkelements').run(['Menus',
   function (Menus) {
-    // Add the articles dropdown item
+    // Add the checkelements dropdown item
     Menus.addMenuItem('topbar', {
-      title: 'Articles',
-      state: 'articles',
-      type: 'dropdown'
+      roles: ['admin'],
+      title: 'Checkelements',
+      state: 'checkelements',
+      type: 'dropdown',
+
     });
 
     // Add the dropdown list item
-    Menus.addSubMenuItem('topbar', 'articles', {
-      title: 'List Articles',
-      state: 'articles.list'
+    Menus.addSubMenuItem('topbar', 'checkelements', {
+      title: 'List Checkelements',
+      state: 'checkelements.list'
     });
 
     // Add the dropdown create item
-    Menus.addSubMenuItem('topbar', 'articles', {
-      title: 'Create Articles',
-      state: 'articles.create'
+    Menus.addSubMenuItem('topbar', 'checkelements', {
+      title: 'Create Checkelements',
+      state: 'checkelements.create'
     });
   }
 ]);
@@ -126,55 +143,55 @@ angular.module('articles').run(['Menus',
 'use strict';
 
 // Setting up route
-angular.module('articles').config(['$stateProvider',
+angular.module('checkelements').config(['$stateProvider',
   function ($stateProvider) {
-    // Articles state routing
+    // checkelements state routing
     $stateProvider
-      .state('articles', {
+      .state('checkelements', {
         abstract: true,
-        url: '/articles',
+        url: '/checkelements',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['admin']
         }
       })
-      .state('articles.list', {
+      .state('checkelements.list', {
         url: '',
-        templateUrl: 'modules/articles/views/list-articles.client.view.html'
+        templateUrl: 'modules/checkelements/views/list-checkelements.client.view.html'
       })
-      .state('articles.create', {
+      .state('checkelements.create', {
         url: '/create',
-        templateUrl: 'modules/articles/views/create-article.client.view.html'
+        templateUrl: 'modules/checkelements/views/create-checkelement.client.view.html'
       })
-      .state('articles.view', {
-        url: '/:articleId',
-        templateUrl: 'modules/articles/views/view-article.client.view.html'
+      .state('checkelements.view', {
+        url: '/:checkelementId',
+        templateUrl: 'modules/checkelements/views/view-checkelement.client.view.html'
       })
-      .state('articles.edit', {
-        url: '/:articleId/edit',
-        templateUrl: 'modules/articles/views/edit-article.client.view.html'
+      .state('checkelements.edit', {
+        url: '/:checkelementId/edit',
+        templateUrl: 'modules/checkelements/views/edit-checkelement.client.view.html'
       });
   }
 ]);
 
 'use strict';
 
-// Articles controller
-angular.module('articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Articles',
-  function ($scope, $stateParams, $location, Authentication, Articles) {
+// checkelements controller
+angular.module('checkelements').controller('CheckelementsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Checkelements',
+  function ($scope, $stateParams, $location, Authentication, Checkelements) {
     $scope.authentication = Authentication;
 
-    // Create new Article
+    // Create new Checkelement
     $scope.create = function () {
-      // Create new Article object
-      var article = new Articles({
+      // Create new Checkelement object
+      var checkelement = new Checkelements({
         title: this.title,
         content: this.content
       });
 
       // Redirect after save
-      article.$save(function (response) {
-        $location.path('articles/' + response._id);
+      checkelement.$save(function (response) {
+        $location.path('checkelements/' + response._id);
 
         // Clear form fields
         $scope.title = '';
@@ -184,43 +201,43 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$statePa
       });
     };
 
-    // Remove existing Article
-    $scope.remove = function (article) {
-      if (article) {
-        article.$remove();
+    // Remove existing checkelement
+    $scope.remove = function (checkelement) {
+      if (checkelement) {
+        checkelement.$remove();
 
-        for (var i in $scope.articles) {
-          if ($scope.articles[i] === article) {
-            $scope.articles.splice(i, 1);
+        for (var i in $scope.checkelements) {
+          if ($scope.checkelements[i] === checkelement) {
+            $scope.checkelements.splice(i, 1);
           }
         }
       } else {
-        $scope.article.$remove(function () {
-          $location.path('articles');
+        $scope.checkelement.$remove(function () {
+          $location.path('checkelements');
         });
       }
     };
 
-    // Update existing Article
+    // Update existing checkelement
     $scope.update = function () {
-      var article = $scope.article;
+      var checkelement = $scope.checkelement;
 
-      article.$update(function () {
-        $location.path('articles/' + article._id);
+      checkelement.$update(function () {
+        $location.path('checkelements/' + checkelement._id);
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
     };
 
-    // Find a list of Articles
+    // Find a list of checkelements
     $scope.find = function () {
-      $scope.articles = Articles.query();
+      $scope.checkelements = Checkelements.query();
     };
 
-    // Find existing Article
+    // Find existing Checkelement
     $scope.findOne = function () {
-      $scope.article = Articles.get({
-        articleId: $stateParams.articleId
+      $scope.checkelement = Checkelements.get({
+        checkelementId: $stateParams.checkelementId
       });
     };
   }
@@ -228,12 +245,162 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$statePa
 
 'use strict';
 
-//Articles service used for communicating with the articles REST endpoints
-angular.module('articles').factory('Articles', ['$resource',
+//checkelements service used for communicating with the checkelements REST endpoints
+angular.module('checkelements').factory('Checkelements', ['$resource',
   function ($resource) {
-    return $resource('api/articles/:articleId', {
-      articleId: '@_id'
+    return $resource('api/checkelements/:checkelementId', {
+      checkelementId: '@_id'
     }, {
+      update: {
+        get: { method:'GET', cache: false },
+        query: { method:'GET', cache: false, isArray:true },
+        method: 'PUT'
+      }
+    });
+  }
+]);
+
+'use strict';
+
+// Configuring the checklists module
+angular.module('checklists').run(['Menus',
+  function (Menus) {
+    // Add the checklists dropdown item
+    Menus.addMenuItem('topbar', {
+      roles: ['admin'],
+      title: 'Checklists',
+      state: 'checklists',
+      type: 'dropdown',
+
+    });
+
+    // Add the dropdown list item
+    Menus.addSubMenuItem('topbar', 'checklists', {
+      title: 'List checklists',
+      state: 'checklists.list'
+    });
+
+    // Add the dropdown create item
+    Menus.addSubMenuItem('topbar', 'checklists', {
+      title: 'Create checklists',
+      state: 'checklists.create'
+    });
+  }
+]);
+
+'use strict';
+
+// Setting up route
+angular.module('checklists').config(['$stateProvider',
+  function ($stateProvider) {
+    // checklists state routing
+    $stateProvider
+      .state('checklists', {
+        abstract: true,
+        url: '/checklists',
+        template: '<ui-view/>',
+        data: {
+          roles: ['admin']
+        }
+      })
+      .state('checklists.list', {
+        url: '',
+        templateUrl: 'modules/checklists/views/list-checklists.client.view.html'
+      })
+      .state('checklists.create', {
+        url: '/create',
+        templateUrl: 'modules/checklists/views/create-checklist.client.view.html'
+      })
+      .state('checklists.view', {
+        url: '/:checklistId',
+        templateUrl: 'modules/checklists/views/view-checklist.client.view.html'
+      })
+      .state('checklists.edit', {
+        url: '/:checklistId/edit',
+        templateUrl: 'modules/checklists/views/edit-checklist.client.view.html'
+      });
+  }
+]);
+
+'use strict';
+
+// checklists controller
+angular.module('checklists').controller('ChecklistsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Checklists',
+  function ($scope, $stateParams, $location, Authentication, Checklists) {
+    $scope.authentication = Authentication;
+
+    // Create new checklist
+    $scope.create = function () {
+      // Create new checklist object
+      var checklist = new Checklists({
+        title: this.title,
+        content: this.content
+      });
+
+      // Redirect after save
+      checklist.$save(function (response) {
+        $location.path('checklists/' + response._id);
+
+        // Clear form fields
+        $scope.title = '';
+        $scope.content = '';
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Remove existing checklist
+    $scope.remove = function (checklist) {
+      if (checklist) {
+        checklist.$remove();
+
+        for (var i in $scope.checklists) {
+          if ($scope.checklists[i] === checklist) {
+            $scope.checklists.splice(i, 1);
+          }
+        }
+      } else {
+        $scope.checklist.$remove(function () {
+          $location.path('checklists');
+        });
+      }
+    };
+
+    // Update existing checklist
+    $scope.update = function () {
+      var checklist = $scope.checklist;
+
+      checklist.$update(function () {
+        $location.path('checklists/' + checklist._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Find a list of checklists
+    $scope.find = function () {
+      $scope.checklists = Checklists.query();
+    };
+
+    // Find existing checklist
+    $scope.findOne = function () {
+      $scope.checklist = Checklists.get({
+        checklistId: $stateParams.checklistId
+      });
+    };
+  }
+]);
+
+'use strict';
+
+//checklists service used for communicating with the checklists REST endpoints
+angular.module('checklists').factory('Checklists', ['$resource',
+  function ($resource) {
+    return $resource('api/checklists/:checklistId', {
+      checklistId: '@_id'
+    }, {
+      get: { method:'GET', cache: false },
+      query: { method:'GET', cache: false, isArray:true },
       update: {
         method: 'PUT'
       }
@@ -422,6 +589,7 @@ angular.module('core').service('Menus', [
         class: options.class,
         isPublic: ((options.isPublic === null || typeof options.isPublic === 'undefined') ? this.menus[menuId].isPublic : options.isPublic),
         roles: ((options.roles === null || typeof options.roles === 'undefined') ? this.menus[menuId].roles : options.roles),
+        // roles: options.roles || 'admin',
         position: options.position || 0,
         items: [],
         shouldRender: shouldRender
@@ -543,6 +711,329 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
         this.socket.removeListener(eventName);
       }
     };
+  }
+]);
+
+'use strict';
+
+// Configuring the Articles module
+angular.module('drones').run(['Menus',
+  function (Menus) {
+    // Add the articles dropdown item
+    Menus.addMenuItem('topbar', {
+      roles: ['admin'],
+      title: 'Drones',
+      state: 'drones',
+      type: 'dropdown',
+
+    });
+
+    // Add the dropdown list item
+    Menus.addSubMenuItem('topbar', 'drones', {
+      title: 'List Drones',
+      state: 'drones.list'
+    });
+
+    // Add the dropdown create item
+    Menus.addSubMenuItem('topbar', 'drones', {
+      title: 'Create Drones',
+      state: 'drones.create'
+    });
+  }
+]);
+
+'use strict';
+
+// Setting up route
+angular.module('drones').config(['$stateProvider',
+  function ($stateProvider) {
+    // drones state routing
+    $stateProvider
+      .state('drones', {
+        abstract: true,
+        url: '/drones',
+        template: '<ui-view/>',
+        data: {
+          roles: ['admin']
+        }
+      })
+      .state('drones.list', {
+        url: '',
+        templateUrl: 'modules/drones/views/list-drones.client.view.html'
+      })
+      .state('drones.create', {
+        url: '/create',
+        templateUrl: 'modules/drones/views/create-drone.client.view.html'
+      })
+      .state('drones.view', {
+        url: '/:droneId',
+        templateUrl: 'modules/drones/views/view-drone.client.view.html'
+      })
+      .state('drones.edit', {
+        url: '/:droneId/edit',
+        templateUrl: 'modules/drones/views/edit-drone.client.view.html'
+      });
+  }
+]);
+
+'use strict';
+
+// Drones controller
+angular.module('drones').controller('DronesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Drones',
+  function ($scope, $stateParams, $location, Authentication, Drones) {
+    $scope.authentication = Authentication;
+
+    // Create new drone
+    $scope.create = function () {
+      // Create new drone object
+      var drone = new Drones({
+        title: this.title,
+        content: this.content
+      });
+
+      // Redirect after save
+      drone.$save(function (response) {
+        $location.path('drones/' + response._id);
+
+        // Clear form fields
+        $scope.title = '';
+        $scope.content = '';
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Remove existing drone
+    $scope.remove = function (drone) {
+      if (drone) {
+        drone.$remove();
+
+        for (var i in $scope.drones) {
+          if ($scope.drones[i] === drone) {
+            $scope.drones.splice(i, 1);
+          }
+        }
+      } else {
+        $scope.drone.$remove(function () {
+          $location.path('drones');
+        });
+      }
+    };
+
+    // Update existing drone
+    $scope.update = function () {
+      var drone = $scope.drone;
+
+      drone.$update(function () {
+        $location.path('drones/' + drone._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Find a list of drones
+    $scope.find = function () {
+      $scope.drones = Drones.query();
+    };
+
+    // Find existing drone
+    $scope.findOne = function () {
+      $scope.drone = Drones.get({
+        droneId: $stateParams.droneId
+      });
+    };
+  }
+]);
+
+'use strict';
+
+//drones service used for communicating with the drones REST endpoints
+angular.module('drones').factory('Drones', ['$resource',
+  function ($resource) {
+    return $resource('api/drones/:droneId', {
+      droneId: '@_id'
+    }, {
+      get: { method:'GET', cache: false },
+      query: { method:'GET', cache: false, isArray:true },
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+]);
+
+'use strict';
+
+// Configuring the flights module
+angular.module('flights').run(['Menus',
+  function (Menus) {
+    // Add the flights dropdown item
+    Menus.addMenuItem('topbar', {
+      roles: ['user','admin'],
+      title: 'Flights',
+      state: 'flights',
+      type: 'dropdown',
+
+    });
+
+    // Add the dropdown list item
+    Menus.addSubMenuItem('topbar', 'flights', {
+      roles: ['admin','user'],
+      title: 'List Flights',
+      state: 'flights.list'
+    });
+
+    // Add the dropdown create item
+    Menus.addSubMenuItem('topbar', 'flights', {
+      roles: ['user'],
+      title: 'Create Flights',
+      state: 'flights.create'
+    });
+  }
+]);
+
+'use strict';
+
+// Setting up route
+angular.module('flights').config(['$stateProvider',
+  function ($stateProvider) {
+    // flights state routing
+    $stateProvider
+      .state('flights', {
+        abstract: true,
+        url: '/flights',
+        template: '<ui-view/>',
+        data: {
+          roles: ['admin','user']
+        }
+      })
+      .state('flights.list', {
+        url: '',
+        templateUrl: 'modules/flights/views/list-flights.client.view.html'
+      })
+      .state('flights.create', {
+        url: '/create',
+        templateUrl: 'modules/flights/views/create-flight.client.view.html'
+      })
+      .state('flights.view', {
+        url: '/:flightId',
+        templateUrl: 'modules/flights/views/view-flight.client.view.html'
+      })
+      .state('flights.edit', {
+        url: '/:flightId/edit',
+        templateUrl: 'modules/flights/views/edit-flight.client.view.html'
+      });
+  }
+]);
+
+'use strict';
+
+// flights controller
+angular.module('flights').controller('FlightsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Flights', '$http',
+  function($scope, $stateParams, $location, Authentication, Flights, $http) {
+    $scope.authentication = Authentication;
+
+    // Create new flight
+    $scope.create = function() {
+      // Create new flight object
+      var flight = new Flights({
+        title: this.title,
+        content: this.content,
+        address: this.address,
+        checklists: $http({
+          method: 'GET',
+          url: '/api/checklists'
+        }).then(function successCallback(response) {
+
+          return response.data;
+        }, function errorCallback(response) {
+
+          console.log('theres an error in checlists');
+        }),
+        drones: $http({
+          method: 'GET',
+          url: '/api/drones'
+        }).then(function successCallback(response) {
+          return response.data;
+        }, function errorCallback(response) {
+          console.log('ciao errori nei droni');
+        }),
+        postFlightNotes: this.postFlightNotes
+      });
+
+      // Redirect after save
+      flight.$save(function(response) {
+        $location.path('flights/' + response._id);
+
+        // Clear form fields
+        $scope.title = '';
+        $scope.content = '';
+        $scope.address = '';
+        $scope.checklists = '';
+        $scope.drones = '';
+        $scope.postFlightNotes = '';
+
+      }, function(errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Remove existing flight
+    $scope.remove = function(flight) {
+      if (flight) {
+        flight.$remove();
+
+        for (var i in $scope.flights) {
+          if ($scope.flights[i] === flight) {
+            $scope.flights.splice(i, 1);
+          }
+        }
+      } else {
+        $scope.flight.$remove(function() {
+          $location.path('flights');
+        });
+      }
+    };
+
+    // Update existing flight
+    $scope.update = function() {
+      var flight = $scope.flight;
+
+      flight.$update(function() {
+        $location.path('flights/' + flight._id);
+      }, function(errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Find a list of flights
+    $scope.find = function() {
+      $scope.flights = Flights.query();
+    };
+
+    // Find existing flight
+    $scope.findOne = function() {
+      $scope.flight = Flights.get({
+        flightId: $stateParams.flightId
+      });
+    };
+  }
+]);
+
+'use strict';
+
+//flights service used for communicating with the flights REST endpoints
+angular.module('flights').factory('Flights', ['$resource',
+  function ($resource) {
+    return $resource('api/flights/:flightId', {
+      flightId: '@_id'
+    }, {
+      get: { method:'GET', cache: false },
+      query: { method:'GET', cache: false, isArray:true },
+      update: {
+        method: 'PUT'
+      }
+    });
   }
 ]);
 

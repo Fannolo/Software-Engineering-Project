@@ -1,16 +1,38 @@
 'use strict';
 
 // checklists controller
-angular.module('checklists').controller('ChecklistsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Checklists',
-  function ($scope, $stateParams, $location, Authentication, Checklists) {
+angular.module('checklists').controller('ChecklistsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Checklists','$http',
+  function ($scope, $stateParams, $location, Authentication, Checklists,$http) {
     $scope.authentication = Authentication;
+
+    $scope.checkelements = [];
+    $scope.getCheckelement = function (){
+      $http({
+        method: 'GET',
+        url: '/api/checkelements'
+      })
+      .success(function(data,status){
+        $scope.checkelements = data;
+      })
+      .error(function(data,status){
+        return 'theres an error in the checkelements';
+      });
+    };
+
+    $scope.selectedCheckelements = [];
+
+    $scope.toggleSelection = function toggleSelection(checkelement) {
+      $scope.selectedCheckelements.push(checkelement);
+      console.log('sto pushando zi');
+    };
 
     // Create new checklist
     $scope.create = function () {
       // Create new checklist object
       var checklist = new Checklists({
         title: this.title,
-        content: this.content
+        content: this.content,
+        checkelement: this.checkelement
       });
 
       // Redirect after save
@@ -20,6 +42,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$sta
         // Clear form fields
         $scope.title = '';
         $scope.content = '';
+        $scope.checkelement = [];
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });

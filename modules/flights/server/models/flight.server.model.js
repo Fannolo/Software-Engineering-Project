@@ -22,21 +22,19 @@ var FlightSchema = new Schema({
   },
   content: {
     type: String,
-    default: '',
-    trim: true
+    default: ''
   },
   address: {
     type: String,
-    default: '',
-    trim: true
+    default: ''
   },
-  checklists: {
-    type: Schema.ObjectId,
-    ref: 'Checklists'
+  checklist: {
+    type: String,
+    default: ''
   },
-  drones: {
-    type: Schema.ObjectId,
-    ref: 'Drones'
+  drone: {
+    type: String,
+    default: ''
   },
   user: {
     type: Schema.ObjectId,
@@ -44,9 +42,11 @@ var FlightSchema = new Schema({
   },
   postFlightNotes: {
     type: String,
-    default: '',
-    trim: true,
-    required: 'Title cannot be blank'
+    default: ''
+  },
+  flightActive:{
+    type: Boolean,
+    default: true
   }
 });
 

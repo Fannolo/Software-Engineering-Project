@@ -5,31 +5,46 @@ angular.module('flights').controller('FlightsController', ['$scope', '$statePara
   function($scope, $stateParams, $location, Authentication, Flights, $http) {
     $scope.authentication = Authentication;
 
+    $scope.drones = [];
+
+    $scope.getDrones = function (){
+      $http({
+        method: 'GET',
+        url: '/api/drones'
+      })
+      .success(function(data, status){
+        $scope.drones = data;
+      })
+      .error(function(data,status){
+        alert('Error');
+      });
+    };
+
+    $scope.checklists = [];
+
+    $scope.getChecklists = function (){
+      $http({
+        method: 'GET',
+        url: '/api/checklists'
+      })
+      .success(function(data, status){
+        $scope.checklists = data;
+      })
+      .error(function(data, status){
+        alert('error');
+      });
+    };
+
+
     // Create new flight
     $scope.create = function() {
       // Create new flight object
       var flight = new Flights({
         title: this.title,
         content: this.content,
+        drone: $scope.drone,
+        checklist: $scope.checklist,
         address: this.address,
-        checklists: $http({
-          method: 'GET',
-          url: '/api/checklists'
-        }).then(function successCallback(response) {
-
-          return response.data;
-        }, function errorCallback(response) {
-
-          console.log('theres an error in checlists');
-        }),
-        drones: $http({
-          method: 'GET',
-          url: '/api/drones'
-        }).then(function successCallback(response) {
-          return response.data;
-        }, function errorCallback(response) {
-          console.log('ciao errori nei droni');
-        }),
         postFlightNotes: this.postFlightNotes
       });
 
@@ -41,8 +56,8 @@ angular.module('flights').controller('FlightsController', ['$scope', '$statePara
         $scope.title = '';
         $scope.content = '';
         $scope.address = '';
-        $scope.checklists = '';
-        $scope.drones = '';
+        $scope.drone = '';
+        $scope.checklist = '';
         $scope.postFlightNotes = '';
 
       }, function(errorResponse) {

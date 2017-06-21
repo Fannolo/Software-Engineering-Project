@@ -40,13 +40,13 @@ exports.read = function (req, res) {
  */
 exports.update = function (req, res) {
   var flight = req.flight;
-
   flight.title = req.body.title;
   flight.content = req.body.content;
+  flight.drone = req.body.drone;
+  flight.checklist = req.body.checklist;
   flight.address = req.body.address;
-  flight.checklists = req.body.checklists;
-  flight.drones = req.body.drones;
   flight.postFlightNotes = req.body.postFlightNotes;
+  flight.flightActive = req.body.flightActive;
 
   flight.save(function (err) {
     if (err) {
@@ -102,7 +102,7 @@ exports.flightByID = function (req, res, next, id) {
     });
   }
 
-  Flight.findById(id).populate('user', 'displayName').exec(function (err, flight) {
+  Flight.findById(id).populate('user','displayName').exec(function (err, flight) {
     if (err) {
       return next(err);
     } else if (!flight) {

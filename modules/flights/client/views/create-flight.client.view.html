@@ -16,9 +16,26 @@
           <div class="controls">
             <textarea name="content" data-ng-model="content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
           </div>
+          <div class="controls" style="padding-top: 10px">
+          <label class="control-label" for="drone">Drone</label>
+          <select name="drone" data-ng-model="drone" ng-init="getDrones()">
+            <option  ng-repeat="drone in drones">{{drone.title}} drone</option>
+          </select>
+          </div>
+          <div class="controls" style="padding-top: 10px">
+          <label class="control-label" for="checklist">Checklist</label>
+          <select name="checklist" data-ng-model="checklist" ng-init="getChecklists()">
+            <option  ng-repeat="checklist in checklists">{{checklist.title}} checklist</option>
+          </select>
+          </div>
+
           <label class="control-label" for="address">Address</label>
           <div class="controls">
             <input name="address" type="text" data-ng-model="address" id="address" class="form-control" placeholder="Address">
+          </div>
+          <label class="control-label" for="postFlightNotes">Post Flight Notes</label>
+          <div class="controls">
+            <input name="postFlightNotes" type="text" data-ng-model="postFlightNotes" class="form-control" placeholder="Post Flight Notes...">
           </div>
         </div>
         <div class="form-group">

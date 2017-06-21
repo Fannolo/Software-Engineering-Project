@@ -29,10 +29,10 @@ var ChecklistSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  checkelement: {
-    type: Schema.ObjectId,
-    ref: 'Checkelement'
-  }
+  checkelement: [{
+    type: String,
+    ref: ''
+  }]
 });
 
 mongoose.model('Checklist', ChecklistSchema);

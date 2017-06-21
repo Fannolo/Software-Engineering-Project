@@ -18,6 +18,15 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="control-label" for="checkelement">Checkelements:</label>
+          <div ng-init="getCheckelement()">
+            <span ng-repeat="checkelement in checkelements">
+              <input type="checkbox" name="{{checkelement.title}}"/>
+              {{checkelement.title}}
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
           <input type="submit" value="Update" class="btn btn-default">
         </div>
         <div data-ng-show="error" class="text-danger">
