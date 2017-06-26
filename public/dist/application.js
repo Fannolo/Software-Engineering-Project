@@ -756,7 +756,6 @@ angular.module('drones').run(['Menus',
       title: 'List Drones',
       state: 'drones.list'
     });
-
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'drones', {
       title: 'Create Drones',
@@ -811,7 +810,9 @@ angular.module('drones').controller('DronesController', ['$scope', '$stateParams
       // Create new drone object
       var drone = new Drones({
         title: this.title,
-        content: this.content
+        content: this.content,
+        dimension: this.dimension,
+        weight: this.weight
       });
 
       // Redirect after save
@@ -821,6 +822,8 @@ angular.module('drones').controller('DronesController', ['$scope', '$stateParams
         // Clear form fields
         $scope.title = '';
         $scope.content = '';
+        $scope.dimension = '';
+        $scope.weight = '';
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
@@ -906,6 +909,11 @@ angular.module('flights').run(['Menus',
       state: 'flights.list'
     });
 
+    Menus.addSubMenuItem('topbar', 'flights', {
+      roles: ['admin','user'],
+      title: 'List Active Flights',
+      state: 'flights.active'
+    });
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'flights', {
       roles: ['user'],
@@ -938,6 +946,10 @@ angular.module('flights').config(['$stateProvider',
         url: '/create',
         templateUrl: 'modules/flights/views/create-flight.client.view.html'
       })
+      .state('flights.active',{
+        url:'/active',
+        templateUrl: 'modules/flights/views/active-list-flight.client.view.html'
+      })
       .state('flights.view', {
         url: '/:flightId',
         templateUrl: 'modules/flights/views/view-flight.client.view.html'
@@ -955,6 +967,20 @@ angular.module('flights').config(['$stateProvider',
 angular.module('flights').controller('FlightsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Flights', '$http',
   function($scope, $stateParams, $location, Authentication, Flights, $http) {
     $scope.authentication = Authentication;
+
+    $scope.exportAction = function (option) {
+         switch (option) {
+             case 'pdf': $scope.$broadcast('export-pdf', {});
+                 break;
+             case 'excel': $scope.$broadcast('export-excel', {});
+                 break;
+             case 'doc': $scope.$broadcast('export-doc', {});
+                 break;
+             case 'csv': $scope.$broadcast('export-csv', {});
+                 break;
+             default: console.log('no event caught');
+         }
+     };
 
     $scope.drones = [];
 
@@ -986,6 +1012,9 @@ angular.module('flights').controller('FlightsController', ['$scope', '$statePara
       });
     };
 
+    $scope.concludeFlight = function (){
+      return !this.flightActive;
+    };
 
     // Create new flight
     $scope.create = function() {
@@ -1057,6 +1086,27 @@ angular.module('flights').controller('FlightsController', ['$scope', '$statePara
     };
   }
 ]);
+
+angular.module('flights').directive('exportTable', function(){
+          var link = function ($scope, elm, attr) {
+            $scope.$on('export-pdf', function (e, d) {
+                elm.tableExport({ type: 'pdf', escape: false });
+            });
+            $scope.$on('export-excel', function (e, d) {
+                elm.tableExport({ type: 'excel', escape: false });
+            });
+            $scope.$on('export-doc', function (e, d) {
+                elm.tableExport({ type: 'doc', escape: false });
+            });
+            $scope.$on('export-csv', function (e, d) {
+                elm.tableExport({ type: 'csv', escape: false });
+            });
+        };
+        return {
+            restrict: 'C',
+            link: link
+        };
+});
 
 'use strict';
 

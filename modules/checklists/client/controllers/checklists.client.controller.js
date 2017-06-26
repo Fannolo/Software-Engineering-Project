@@ -22,8 +22,14 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$sta
     $scope.selectedCheckelements = [];
 
     $scope.toggleSelection = function toggleSelection(checkelement) {
-      $scope.selectedCheckelements.push(checkelement);
-      console.log('sto pushando zi');
+      var idx = $scope.selectedCheckelements.indexOf(checkelement);
+      if(idx > -1){
+        $scope.selectedCheckelements.splice(idx,1);
+        console.log($scope.selectedCheckelements);
+      }else{
+        $scope.selectedCheckelements.push(checkelement);
+        console.log('sto pushando zi');
+      }
     };
 
     // Create new checklist
@@ -32,7 +38,8 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$sta
       var checklist = new Checklists({
         title: this.title,
         content: this.content,
-        checkelement: this.checkelement
+        checkelement: this.checkelement,
+        selectedCheckelements: this.selectedCheckelements
       });
 
       // Redirect after save
@@ -43,6 +50,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$sta
         $scope.title = '';
         $scope.content = '';
         $scope.checkelement = [];
+        $scope.selectedCheckelements = [];
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });

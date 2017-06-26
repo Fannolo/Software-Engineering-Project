@@ -10,7 +10,9 @@ angular.module('drones').controller('DronesController', ['$scope', '$stateParams
       // Create new drone object
       var drone = new Drones({
         title: this.title,
-        content: this.content
+        content: this.content,
+        dimension: this.dimension,
+        weight: this.weight
       });
 
       // Redirect after save
@@ -20,6 +22,8 @@ angular.module('drones').controller('DronesController', ['$scope', '$stateParams
         // Clear form fields
         $scope.title = '';
         $scope.content = '';
+        $scope.dimension = '';
+        $scope.weight = '';
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });

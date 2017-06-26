@@ -17,7 +17,6 @@ angular.module('drones').run(['Menus',
       title: 'List Drones',
       state: 'drones.list'
     });
-
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'drones', {
       title: 'Create Drones',

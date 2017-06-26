@@ -1,14 +1,9 @@
-<section data-ng-controller="FlightsController" data-ng-init="findOne()">
+<section ng-controller="FlightsController" data-ng-init="findOne()">
   <div class="page-header">
     <h1 data-ng-bind="flight.title"></h1>
   </div>
   <div class="pull-right" data-ng-show="authentication.user._id == flight.user._id">
-    <a class="btn btn-primary" data-ui-sref="flights.edit({flightId: flight._id})">
-      <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn btn-primary" data-ng-click="remove();">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
+
   </div>
   <small>
     <em class="text-muted">
@@ -19,19 +14,46 @@
     </em>
   </small>
   <div>
-
-
-  <label> Description: </label>
-  <p class="lead" data-ng-bind="flight.content"></p>
-  <label> Drone Used: </label>
-  <p class="lead" data-ng-bind="flight.drone"></p>
-  <label> Checklist Used: </label>
-  <p class="lead" data-ng-bind="flight.checklist"></p>
-  <label> Flight Address: </label>
-  <p class="lead" data-ng-bind="flight.address"></p>
-  <label>Post Flights Notes:</label>
-  <p class="lead" data-ng-bind="flight.postFlightNotes"></p>
-  <label>Active:</label>
-  <p class="lead" data-ng-bind="flight.flightActive"></p>
+    <label> Description: </label>
+    <p class="lead" data-ng-bind="flight.content"></p>
+    <label> Drone Used: </label>
+    <p class="lead" data-ng-bind="flight.drone"></p>
+    <label> Checklist Used: </label>
+    <p class="lead" data-ng-bind="flight.checklist"></p>
+    <label> Flight Address: </label>
+    <p class="lead" data-ng-bind="flight.address"></p>
+    <label>Post Flights Notes:</label>
+    <p class="lead" data-ng-bind="flight.postFlightNotes"></p>
+    <label>Active:</label>
+    <p class="lead" data-ng-bind="flight.flightActive"></p>
   </div>
+
+
+
+  <table class="export-table" style="width: 100%;">
+    <tbody>
+      <tr>
+        <td>{{flight.content}}</td>
+      </tr>
+      <tr>
+        <td>{{flight.drone}}</td>
+      </tr>
+      <tr>
+        <td>{{flight.checklist}}</td>
+      </tr>
+      <tr>
+        <td>{{flight.address}}</td>
+      </tr>
+      <tr>
+        <td>{{flight.postFlightNotes}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <a class="btn btn-primary" data-ui-sref="flights.edit({flightId: flight._id})">
+    <i class="glyphicon glyphicon-edit"></i>
+  </a>
+  <a class="btn btn-primary" data-ng-click="remove();">
+    <i class="glyphicon glyphicon-trash"></i>
+  </a>
+  <a class="btn btn-primary" href="#" data-ng-click="exportAction('pdf')"> Download Report</a><br/><br/>
 </section>

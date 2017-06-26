@@ -28,6 +28,14 @@ var DroneSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  dimension: {
+    type: String,
+    default: ''
+  },
+  weight: {
+    type: String,
+    default: ''
   }
 });
 

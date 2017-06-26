@@ -14,7 +14,13 @@ module.exports = {
         'public/lib/angular-ui-router/release/angular-ui-router.min.js',
         'public/lib/angular-ui-utils/ui-utils.min.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
-        'public/lib/angular-file-upload/angular-file-upload.min.js'
+        'public/lib/angular-file-upload/angular-file-upload.min.js',
+        'public/lib/jquery/dist/jquery.js',
+        'public/lib/tableExport/tableExport.js',
+        'public/lib/jquerybase64/jquery.base64.js',
+        'public/lib/sprintf/sprintf.js',
+        'public/lib/jspdf/jspdf.js',
+        'public/lib/base64/base64.js'
       ]
     },
     css: 'public/dist/application.min.css',

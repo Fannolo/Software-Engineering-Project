@@ -21,6 +21,10 @@ angular.module('flights').config(['$stateProvider',
         url: '/create',
         templateUrl: 'modules/flights/views/create-flight.client.view.html'
       })
+      .state('flights.active',{
+        url:'/active',
+        templateUrl: 'modules/flights/views/active-list-flight.client.view.html'
+      })
       .state('flights.view', {
         url: '/:flightId',
         templateUrl: 'modules/flights/views/view-flight.client.view.html'

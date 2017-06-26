@@ -18,6 +18,18 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="control-label" for="title">Dimensions</label>
+          <div class="controls">
+            <input name="dimension" type="text" data-ng-model="drone.dimension" id="dimension" class="form-control" placeholder="height x width">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="title">Weight</label>
+          <div class="controls">
+            <input name="weight" type="text" data-ng-model="drone.weight" id="weight" class="form-control" placeholder="Weight">
+          </div>
+        </div>
+        <div class="form-group">
           <input type="submit" value="Update" class="btn btn-default">
         </div>
         <div data-ng-show="error" class="text-danger">

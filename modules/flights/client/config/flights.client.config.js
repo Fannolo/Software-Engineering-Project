@@ -19,6 +19,11 @@ angular.module('flights').run(['Menus',
       state: 'flights.list'
     });
 
+    Menus.addSubMenuItem('topbar', 'flights', {
+      roles: ['admin','user'],
+      title: 'List Active Flights',
+      state: 'flights.active'
+    });
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'flights', {
       roles: ['user'],

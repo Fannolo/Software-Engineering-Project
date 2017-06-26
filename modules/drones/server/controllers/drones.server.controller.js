@@ -41,6 +41,8 @@ exports.update = function (req, res) {
 
   drone.title = req.body.title;
   drone.content = req.body.content;
+  drone.dimension = req.body.dimension;
+  drone.weight = req.body.weight;
 
   drone.save(function (err) {
     if (err) {

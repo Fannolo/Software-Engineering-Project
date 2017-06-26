@@ -17,26 +17,43 @@
             <textarea name="content" data-ng-model="flight.content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
           </div>
         </div>
+        <div class="form-group">
         <div class="controls" style="padding-top: 10px">
         <label class="control-label" for="drone">Drone:</label>
-        <select name="drone" data-ng-model="flight.drone" ng-init="getDrones()">
+        <select style="margin-left: 21px" name="drone" data-ng-model="flight.drone" ng-init="getDrones()">
           <option  ng-repeat="drone in drones">{{drone.title}} drone</option>
         </select>
-        </div>
+      </div></div>
+      <div class="form-group">
         <div class="controls" style="padding-top: 10px">
         <label class="control-label" for="checklist">Checklist:</label>
         <select name="checklist" data-ng-model="flight.checklist" ng-init="getChecklists()">
           <option  ng-repeat="checklist in checklists">{{checklist.title}} checklist</option>
         </select>
         </div>
+      </div>
+      <div class="form-group">
         <label class="control-label" for="address">Address</label>
         <div class="controls">
           <input name="address" type="text" data-ng-model="flight.address" id="address" class="form-control" placeholder="Address">
         </div>
+      </div>
+      <div class="form-group">
         <label class="control-label" for="postFlightNotes">Post Flight Notes</label>
         <div class="controls">
           <input name="postFlightNotes" type="text" data-ng-model="flight.postFlightNotes" class="form-control" placeholder="Post Flight Notes...">
         </div>
+      </div>
+      <div class="form-group">
+
+        <label class="control-label" for="postFlightNotes">Flight Still in Progress</label>
+        <div class="controls">
+          <p class="lead" name="flightActive" data-ng-model="flight.flightActive">
+            {{flight.flightActive}}
+          </p>
+          <button type="submit" class="btn btn-default" ng-click="flight.flightActive = false">Conclude Flight</button>
+        </div>
+      </div>
         <div class="form-group">
           <input type="submit" value="Update" class="btn btn-default">
         </div>

@@ -20,10 +20,16 @@
         <div class="form-group">
           <label class="control-label" for="checkelement">Checkelements:</label>
           <div ng-init="getCheckelement()">
-            <span ng-repeat="checkelement in checkelements">
-              <input type="checkbox" name="{{checkelement.title}}" ng-click="toggleSelection(checkelement)"/>
+            <label ng-repeat="checkelement in checkelements" class="checkbox-inline">
+              <input type="checkbox" name="selectedCheckelements[]" value="{{checkelement}}"  ng-checked="selection.indexOf(checkelement) > -1" ng-click="toggleSelection(checkelement)"/>
               {{checkelement.title}}
-            </span>
+            </label>
+          </div>
+          <div class="row">
+            <div class="col-md-6" data-ng-model="selectedCheckelements">
+              <h4>selection</h4>
+              <pre data-ng-model="selectedCheckelements">{{selectedCheckelements|json}}</pre>
+            </div>
           </div>
         </div>
         <div class="form-group">
